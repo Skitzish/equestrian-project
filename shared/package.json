@@ -1,0 +1,23 @@
+{
+  "name": "@equestrian-legacy/shared",
+  "version": "0.1.0",
+  "description": "Shared game logic for Equestrian Legacy horse training and breeding simulation",
+  "main": "index.ts",
+  "types": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test runner specified\" && exit 1"
+  },
+  "keywords": [
+    "horse",
+    "simulation",
+    "genetics",
+    "training"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  }
+}
