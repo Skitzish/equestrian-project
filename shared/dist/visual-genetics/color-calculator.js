@@ -64,8 +64,10 @@ function calculateColor(genetics) {
     const geneticCode = formatGeneticCode(genetics);
     return {
         baseColor,
+        shade: 'medium',
         displayColor,
         isGraying,
+        markings: 'solid',
         geneticCode
     };
 }

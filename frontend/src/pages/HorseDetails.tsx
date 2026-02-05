@@ -7,6 +7,7 @@ import { SKILLS } from '@shared/skills/skill-definitions';
 import { validateSkillTraining } from '@shared/skills/skill-validation';
 import { useAuth } from '../contexts/AuthContext';
 import { calculateColor, getColorName, formatGeneticCode } from '@shared/visual-genetics/color-calculator';
+import HorseImage from '../components/HorseImage';
 import type { VisualGenetics } from '@shared/index';
 
 const HorseDetails: React.FC = () => {
@@ -69,8 +70,10 @@ const HorseDetails: React.FC = () => {
     return { potential: potential.toFixed(1), stars: '⭐'.repeat(stars) };
   };
 
+  const colorInfo = calculateColor(horse.visualGenetics as VisualGenetics);
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="main-container">
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
@@ -93,6 +96,59 @@ const HorseDetails: React.FC = () => {
 
       <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         {/* Horse Header */}
+      <div className="card mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* LEFT SIDE: Horse info */}
+          <div>
+          <div className='flex justify-between items-start mb-4'>
+            <div>
+              <h1 className='text-3xl font-bold'>{horse.name}</h1>
+              <p className='text-gray-600'>
+                {horse.gender.charAt(0).toUpperCase()+horse.gender.slice(1)} • {horse.age} years old • Generation {horse.generation}
+              </p>
+            </div>
+            <button onClick={() => setShowRenameModal(true)} className='btn-secondary text-sm'>
+              Rename
+            </button>
+          </div>
+          <div className='space-y-3 text-sm'>
+            <div className='flex justify-between'>
+              <span className='text-gray-600 font-medium'>Color:</span>
+              <span className='font-semibold'>{getColorName(colorInfo.displayColor)}</span>
+            </div>
+            <div className='flex justify-between'>
+              <span className='text-gray-600 font-medium'>Personality:</span>
+              <span>{horse.mentalState.personality}</span>
+            </div>
+            <div className='flex justify-between'>
+              <span className='text-gray-600 font-medium'>Mood:</span>
+              <span>{horse.mentalState.mood}</span>
+            </div>
+            <div className='flex justify-between'>
+              <span className='text-gray-600 font-medium'>Fatigue:</span>
+              <span>{horse.mentalState.fatigue}%</span>
+            </div>
+            <div className='flex justify-between'>
+              <span className='text-gray-600 font-medium'>Stabling:</span>
+              <span className='capitalize'>{horse.housing}</span>
+            </div>
+          </div>
+          </div>
+          
+          {/* RIGHT SIDE: Horse image */}
+          <div>
+            <HorseImage
+              visualGenetics={horse.visualGenetics as VisualGenetics}
+              width={500}
+              height={382}
+              className="w-full"
+              alt={`${horse.name} - ${getColorName(colorInfo.displayColor)}`}
+            />
+          </div>
+        </div>
+      </div>
+
+        {/* Old Horse Header
         <div className="card mb-8">
           <div className="flex justify-between items-start mb-4">
             <div>
@@ -135,7 +191,7 @@ const HorseDetails: React.FC = () => {
               <span className="font-medium ml-2">{horse.housing}</span>
             </div>
           </div>
-        </div>
+        </div>*/}
 
         {/* Last Training Result */}
         {lastTrainingResult && (

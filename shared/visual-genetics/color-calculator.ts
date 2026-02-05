@@ -72,8 +72,10 @@ export function calculateColor(genetics: VisualGenetics): ColorResult {
 
     return {
         baseColor,
+        shade: 'medium',
         displayColor,
         isGraying,
+        markings: 'solid',
         geneticCode
     };
 }
