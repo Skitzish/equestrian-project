@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { gameService } from '../services/api';
+import { useAdvanceDay } from '@/hooks/useAdvanceDay';
+import { getMainNavigationButtons, getSecondaryNavButtons } from '@/config/buttonPresets';
+import Header from '@/components/Header';
+import ButtonBar from '@/components/ButtonBar';
 
 interface Chore {
   id: string;
@@ -37,26 +41,20 @@ const BarnChores: React.FC = () => {
     }
   };
 
+  const handleAdvanceDay = useAdvanceDay;
+
+  const buttons = [
+        ...getSecondaryNavButtons,
+        ...getMainNavigationButtons(handleAdvanceDay)
+        
+    ]
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="main-container">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center">
-            <Link to="/" className="text-green-600 hover:text-green-700">
-              ← Back to Stables
-            </Link>
-            <div className="flex items-center gap-6">
-              <div className="text-sm text-gray-600">
-                <span className="font-medium">Day {user?.currentDay}</span>
-                <span className="mx-2">•</span>
-                <span>{user?.timeRemainingToday} min left</span>
-                <span className="mx-2">•</span>
-                <span className="font-medium text-green-600">${user?.money}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <header>
+        <Header />
+        <ButtonBar buttons={buttons} />
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">

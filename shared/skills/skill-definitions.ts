@@ -172,6 +172,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'intelligence', amount: 0.01 },
     ],
     isPhysical: false,
+    minimumAge: 121 //four months, for neck strength
   },
 
   loading: {
@@ -238,6 +239,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'tempo', amount: 0.025 },
     ],
     isPhysical: true,
+    minimumAge: 182 //six months, lunging is hard on growing bodies
   },
 
   lunging_long_line: {
@@ -265,6 +267,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'intelligence', amount: 0.025 }
     ],
     isPhysical: true,
+    minimumAge: 365 //one year, same as above, but even worse because of head and neck pressure
   },
 
 
@@ -348,7 +351,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
     description: 'Teaching the horse to accept a rider mounting',
     baseTrainingValue: 5,
     prerequisites: [
-      { skill: 'saddling', minLevel: 50 },
+      { skill: 'tacking_pad_saddle_girth', minLevel: 50 },
       { skill: 'standing', minLevel: 60 },
     ],
     minimumStats: [
@@ -365,6 +368,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'strength', amount: 0.03 },
     ],
     isPhysical: true,
+    minimumAge: (365*2) //two years. shouldn't sit on babies.
   },
   
   // ========== DRIVING SKILLS ==========
@@ -538,6 +542,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'movement', amount: 0.01 },
     ],
     isPhysical: true,
+    minimumAge: (365*2)
   },
   
   trot_under_saddle: {
@@ -565,6 +570,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'tempo', amount: 0.02 }
     ],
     isPhysical: true,
+    minimumAge: (365*2)
   },
   
   canter_under_saddle: {
@@ -594,6 +600,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'speed', amount: 0.02 },
     ],
     isPhysical: true,
+    minimumAge: ((365*2) + 182) //2.5 years
   },
 
   halt_under_saddle: {
@@ -615,6 +622,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'strength', amount: 0.03 }
     ],
     isPhysical: true,
+    minimumAge: (365*2)
   },
 
   turn_under_saddle: {
@@ -637,6 +645,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'flexibility', amount: 0.03 }
     ],
     isPhysical: true,
+    minimumAge: (365*2)
   },
 
   back_under_saddle: {
@@ -660,6 +669,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'balance', amount: 0.03 }
     ],
     isPhysical: true,
+    minimumAge: (365*2)
   },
   
   // ========== INTERMEDIATE SKILLS ==========
@@ -685,6 +695,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'strength', amount: 0.05 },
     ],
     isPhysical: true,
+    minimumAge: (365*3)
   },
 
   self_carriage: {
@@ -708,6 +719,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'stamina', amount: 0.04 }
     ],
     isPhysical: true,
+    minimumAge: (365*3)
   },
 
   yield_forehand: {
@@ -731,6 +743,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'balance', amount: 0.03 }
     ],
     isPhysical: true,
+    minimumAge: (365*3)
   },
 
   yield_haunches: {
@@ -754,6 +767,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'balance', amount: 0.03 }
     ],
     isPhysical: true,
+    minimumAge: (365*3)
   },
 
   square_halt: {
@@ -777,6 +791,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'strength', amount: 0.04 }
     ],
     isPhysical: true,
+    minimumAge: (365*2)
   },
 
   ground_poles_walk: {
@@ -799,6 +814,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'bravery', amount: 0.03 }
     ],
     isPhysical: true,
+    minimumAge: (365*2)
   },
 
   ground_poles_trot: {
@@ -821,6 +837,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'stamina', amount: 0.03 }
     ],
     isPhysical: true,
+    minimumAge: (365*3)
   },
   
   ground_poles_canter: {
@@ -844,6 +861,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'stamina', amount: 0.04 }
     ],
     isPhysical: true,
+    minimumAge: (365*3)
   },
 
   sidepass: {
@@ -867,6 +885,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'balance', amount: 0.04 }
     ],
     isPhysical: true,
+    minimumAge: (365*3)
   },
 
   cavaletti: {
@@ -890,6 +909,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'strength', amount: 0.04 }
     ],
     isPhysical: true,
+    minimumAge: (365*3)
   },
 
   transitions: {
@@ -914,6 +934,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'stamina', amount: 0.03 }
     ],
     isPhysical: true,
+    minimumAge: (365*2)
   },
 
   // ========== ADVANCED SKILLS ==========
@@ -947,6 +968,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'stamina', amount: 0.02 },
     ],
     isPhysical: true,
+    minimumAge: (365*4)
   },
 
   collection: {
@@ -971,6 +993,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'flexibility', amount: 0.06 }
     ],
     isPhysical: true,
+    minimumAge: (365*3)
   },
 
   extension: {
@@ -995,6 +1018,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'movement', amount: 0.06 }
     ],
     isPhysical: true,
+    minimumAge: (365*3)
   },
 
   slow_spin: {
@@ -1018,6 +1042,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'flexibility', amount: 0.05 }
     ],
     isPhysical: true,
+    minimumAge: (365*3)
   },
 
   turn_on_forehand: {
@@ -1040,6 +1065,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'balance', amount: 0.05 }
     ],
     isPhysical: true,
+    minimumAge: (365*3)
   },
 
   halfpass: {
@@ -1064,6 +1090,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'balance', amount: 0.06 }
     ],
     isPhysical: true,
+    minimumAge: (365*4)
   },
 
   pole_sidepass: {
@@ -1088,6 +1115,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'balance', amount: 0.05 }
     ],
     isPhysical: true,
+    minimumAge: (365*3)
   },
 
   lead_changes_simple: {
@@ -1113,6 +1141,7 @@ export const SKILLS: Record<string, SkillDefinition> = {
       { stat: 'flexibility', amount: 0.05 }
     ],
     isPhysical: true,
+    minimumAge: (365*3)
   },
 };
 

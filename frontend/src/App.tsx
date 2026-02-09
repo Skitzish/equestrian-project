@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import HorseDetails from './pages/HorseDetails';
 import Breeding from './pages/Breeding';
 import BarnChores from './pages/BarnChores.tsx';
+import TestPage from './pages/TestPage.tsx';
 
 // Protected Route wrapper
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -100,6 +101,15 @@ const App: React.FC = () => {
             element={
               <ProtectedRoute>
                 <BarnChores />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/testpage"
+            element={
+              <ProtectedRoute>
+                <TestPage />
               </ProtectedRoute>
             }
           />

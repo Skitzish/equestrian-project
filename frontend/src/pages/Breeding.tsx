@@ -5,7 +5,12 @@ import { horseService, breedingService } from '../services/api';
 import { Horse } from '../types';
 import { calculatePotential, getStarRating } from '@shared/types/genetics.types';
 import { calculateColor, getColorName } from '@shared/visual-genetics/color-calculator';
+import { formatDetailedAge } from '@shared/training/age-system';
 import type { VisualGenetics } from '@shared/types/visual-genetics.types';
+import { useAdvanceDay } from '@/hooks/useAdvanceDay';
+import Header from '@/components/Header';
+import ButtonBar from '@/components/ButtonBar';
+import { getMainNavigationButtons, getSecondaryNavButtons } from '@/config/buttonPresets';
 
 const Breeding: React.FC = () => {
   const { user } = useAuth();
@@ -35,8 +40,8 @@ const Breeding: React.FC = () => {
   };
 
   // Filter horses for breeding
-  const stallions = horses.filter(h => h.gender === 'stallion' && h.age >= 3);
-  const mares = horses.filter(h => h.gender === 'mare' && h.age >= 3);
+  const stallions = horses.filter(h => h.gender === 'stallion' && h.age >= (3*365));
+  const mares = horses.filter(h => h.gender === 'mare' && h.age >= (3*365));
 
   const selectedSire = horses.find(h => h.id === sireId);
   const selectedDam = horses.find(h => h.id === damId);
@@ -98,6 +103,13 @@ const Breeding: React.FC = () => {
     };
   };
 
+  const handleAdvanceDay = useAdvanceDay(loadHorses);
+
+  const buttons = [
+    ...getSecondaryNavButtons,
+    ...getMainNavigationButtons(handleAdvanceDay) 
+  ]
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -107,23 +119,11 @@ const Breeding: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="main-container">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center">
-            <Link to="/" className="text-green-600 hover:text-green-700">
-              ← Back to Stables
-            </Link>
-            <div className="flex items-center gap-6">
-              <div className="text-sm text-gray-600">
-                <span className="font-medium">Day {user?.currentDay}</span>
-                <span className="mx-2">•</span>
-                <span className="font-medium text-green-600">${user?.money}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <header>
+        <Header />
+        <ButtonBar buttons={buttons} />
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
@@ -179,7 +179,7 @@ const Breeding: React.FC = () => {
                             {getColorName(calculateColor(horse.visualGenetics as VisualGenetics).displayColor)}
                           </div>
                           <div className="text-sm text-gray-600">
-                            {horse.age} years • {horse.mentalState.personality}
+                            {formatDetailedAge(horse.age)} years • {horse.mentalState.personality}
                           </div>
                           <div className="text-sm text-gray-600 mt-1">
                             Avg Potential: {getAveragePotential(horse)} {'⭐'.repeat(getStarRating(parseFloat(getAveragePotential(horse))))}
@@ -220,7 +220,7 @@ const Breeding: React.FC = () => {
                             {getColorName(calculateColor(horse.visualGenetics as VisualGenetics).displayColor)}
                           </div>
                           <div className="text-sm text-gray-600">
-                            {horse.age} years • {horse.mentalState.personality}
+                            {formatDetailedAge(horse.age)} years • {horse.mentalState.personality}
                           </div>
                           <div className="text-sm text-gray-600 mt-1">
                             Avg Potential: {getAveragePotential(horse)} {'⭐'.repeat(getStarRating(parseFloat(getAveragePotential(horse))))}

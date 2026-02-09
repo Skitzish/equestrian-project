@@ -14,7 +14,7 @@ import { SkillDefinition } from '../types/training.types';
 /**
  * Training formula constants
  */
-const FIXED_BOND_MODIFIER = 5; // Temporary until bond system is implemented
+const FIXED_BOND_MODIFIER = 1; // Temporary until bond system is implemented
 
 /**
  * Apply training session to a horse
@@ -39,6 +39,30 @@ export function applyTraining(
     };
   }
   
+  //Check the skills's age requirements
+  let injuryChance = 0;
+  let ageInjury = false;
+
+  if(skill.minimumAge && horse.age < skill.minimumAge){
+    console.log("Below minimum age.");
+    const daysUnder = skill.minimumAge - horse.age;
+    const baseRiskPerDay = skill.isPhysical ? (0.5/365) : (0.25/365); //50% or 25% per year younger, based on physicality
+
+    injuryChance = daysUnder * baseRiskPerDay;
+
+    console.log("Injury chance = " + injuryChance);
+    //Cap at 80% chance
+    injuryChance = Math.min(injuryChance, 0.80);
+
+    const injuryRoll = Math.random();
+    console.log("injuryRoll = " + injuryRoll);
+
+    //Roll for injury
+    if(injuryRoll < injuryChance){
+      ageInjury = true
+    }
+  }
+
   // Get current skill level
   const currentSkillLevel = horse.skills[skillId] || 0;
   
@@ -51,11 +75,12 @@ export function applyTraining(
     duration
   );
   
-  // Determine success/failure
-  const success = sessionValue > 0;
+  // Determine success/failure. Only succeed if positive session and no injury.
+  const success = sessionValue > 0 && !ageInjury;
   
-  // Update skill level (can be negative for bad sessions)
-  const newSkillLevel = Math.max(0, Math.min(100, currentSkillLevel + sessionValue));
+  // Update skill level (can be negative for bad sessions). If injured, new skill is same as old skill.
+  // The assignment for true could change later if we add backsliding with injury.
+  const newSkillLevel = ageInjury ? Math.max(0, currentSkillLevel) : Math.max(0, Math.min(100, currentSkillLevel + sessionValue));
   const skillGained = newSkillLevel - currentSkillLevel;
   
   // Update stats based on skill contributions
@@ -96,8 +121,10 @@ export function applyTraining(
     skill.name,
     success,
     skillGained,
+    duration,
     horse.mentalState.personality,
-    newMood
+    newMood,
+    ageInjury
   );
   
   return {
@@ -106,7 +133,7 @@ export function applyTraining(
     statsGained,
     fatigueGained,
     moodChanged,
-    newMood: moodChanged ? newMood : undefined,
+    newMood,
     message,
   };
 }
@@ -152,7 +179,8 @@ function calculateSessionValue(
   const TSM = getTrainerSkillModifier(trainer);
   
   // Tr - Trainability (based on intelligence, 0-100)
-  const Tr = (horse.training.intelligence || 0) * 100;
+  const naturalInt = (horse.genes.intelligence[0] + horse.genes.intelligence[1]) /2;
+  const Tr = naturalInt * horse.training.intelligence;
   
   // PV - Personality Value (-20 to +20, variable for Bold)
   const bondLevel = getHighestBondLevel(horse, trainer.id);
@@ -168,13 +196,24 @@ function calculateSessionValue(
   const CTV = (BTV - PTM - SDM) * TSM;
   
   // Calculate trainability factor
-  const trainabilityFactor = ((Tr + PV) * MM) + BM;
+  const trainabilityFactor = (Math.max(0, (Tr + PV))* MM) + BM;
   
   // Scale trainability to reasonable range (0-1.3)
   const scaledTrainability = trainabilityFactor / 100;
   
   // Duration multiplier (5min = 0.33x, 15min = 1x, 30min = 2x, 60min = 4x)
-  const durationMultiplier = duration / 15;
+  let durationMultiplier = duration / 15;
+  let maxGain = 2.5;
+  if(duration === 60){
+    durationMultiplier = 3;
+    maxGain = 10;
+  }else if(duration === 30){
+    durationMultiplier = 1.75;
+    maxGain = 5;
+  }else if(duration === 5){
+    durationMultiplier = 0.5;
+    maxGain = 1.25;
+  }
   
   // Calculate raw session value
   const rawValue = FM * (CTV * scaledTrainability) * durationMultiplier;
@@ -184,8 +223,28 @@ function calculateSessionValue(
   
   const finalValue = rawValue * diminishingFactor;
   
+  console.log("FM = " + FM);
+  console.log("BTV = " + BTV);
+  //console.log("PTM = " + PTM);
+  console.log("SDM = " + SDM);
+  //console.log("TSM = " + TSM);
+  //console.log("naturalInt = " + naturalInt);
+  //console.log("Intelligence = " + horse.training.intelligence);
+  //console.log("Tr = " + Tr);
+  console.log("PV = " + PV);
+  console.log("MM = " + MM);
+  //console.log("CTV = (BTV - PTV - SDM) * TSM");
+  console.log("CTV = " + CTV);
+  console.log("Tr + PV = " + (Tr + PV));
+  //console.log("trainabilityFactor Math result = " + Math.max(0, (Tr + PV)));
+  console.log("trainabilityFactor = " + trainabilityFactor);
+  console.log("scaledTrainability = " + scaledTrainability);
+  console.log("raw before duration mod: " + (FM * (CTV * scaledTrainability)));
+  //console.log("durationMultiplier: " + durationMultiplier);
+  console.log("rawValue = " + rawValue);
+  console.log("sessionValue: " + finalValue);
   // Clamp to reasonable range (-5 to +10)
-  return Math.max(-5, Math.min(10, finalValue));
+  return Math.max(-2.5, Math.min(maxGain, finalValue));
 }
 
 /**
@@ -314,9 +373,18 @@ function generateTrainingMessage(
   skillName: string,
   success: boolean,
   skillGained: number,
+  duration: number,
   personality: string,
-  mood: string
+  mood: string,
+  ageInjury: boolean
 ): string {
+  if(ageInjury){
+    //Negative message if horse was injured
+    return `${horseName} sustained an injury during training. They may be too young for ${skillName} training.`;
+  }
+
+  const sessionsPerDuration = duration/15;
+
   if (!success || skillGained < 0) {
     // Negative messages for difficult personalities
     if (['Recalcitrant', 'Intractable', 'Stubborn'].includes(personality)) {
@@ -328,7 +396,7 @@ function generateTrainingMessage(
     return `${horseName} struggled with ${skillName} training today.`;
   }
   
-  if (skillGained >= 5) {
+  if ((skillGained/sessionsPerDuration) >= 2) {
     // Excellent progress
     if (['Willing', 'Amiable', 'Curious'].includes(personality)) {
       return `${horseName} eagerly worked on ${skillName} and made excellent progress!`;
@@ -336,7 +404,7 @@ function generateTrainingMessage(
     return `${horseName} performed exceptionally well during ${skillName} training!`;
   }
   
-  if (skillGained >= 2) {
+  if ((skillGained/sessionsPerDuration) >= 1) {
     // Good progress
     if (['Personable', 'Curious'].includes(personality)) {
       return `${horseName} was engaged and made good progress with ${skillName}.`;

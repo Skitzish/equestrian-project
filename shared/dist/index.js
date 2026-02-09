@@ -24,6 +24,7 @@ __exportStar(require("./types/mental-state.types"), exports);
 __exportStar(require("./types/training.types"), exports);
 __exportStar(require("./types/horse.types"), exports);
 __exportStar(require("./types/visual-genetics.types"), exports);
+__exportStar(require("./types/conformation-genetics.types"), exports);
 // ========== GENETICS ==========
 __exportStar(require("./genetics/breeding"), exports);
 __exportStar(require("./genetics/phenotype"), exports);
@@ -31,6 +32,9 @@ __exportStar(require("./genetics/phenotype"), exports);
 __exportStar(require("./visual-genetics/color-calculator"), exports);
 __exportStar(require("./visual-genetics/color-generator"), exports);
 __exportStar(require("./visual-genetics/color-breeding"), exports);
+// ========== CONFORMATION GENETICS =========
+__exportStar(require("./conformation-genetics/conformation-breeding"), exports);
+__exportStar(require("./conformation-genetics/conformation-generator"), exports);
 // ========== SKILLS ==========
 __exportStar(require("./skills/skill-definitions"), exports);
 __exportStar(require("./skills/skill-validation"), exports);

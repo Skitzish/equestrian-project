@@ -169,6 +169,7 @@ exports.SKILLS = {
             { stat: 'intelligence', amount: 0.01 },
         ],
         isPhysical: false,
+        minimumAge: 121 //four months, for neck strength
     },
     loading: {
         id: 'loading',
@@ -232,6 +233,7 @@ exports.SKILLS = {
             { stat: 'tempo', amount: 0.025 },
         ],
         isPhysical: true,
+        minimumAge: 182 //six months, lunging is hard on growing bodies
     },
     lunging_long_line: {
         id: 'lunging_long_line',
@@ -258,6 +260,7 @@ exports.SKILLS = {
             { stat: 'intelligence', amount: 0.025 }
         ],
         isPhysical: true,
+        minimumAge: 365 //one year, same as above, but even worse because of head and neck pressure
     },
     tacking_pad_saddle_girth: {
         id: 'tacking_pad_saddle_girth',
@@ -353,6 +356,7 @@ exports.SKILLS = {
             { stat: 'strength', amount: 0.03 },
         ],
         isPhysical: true,
+        minimumAge: (365 * 2) //two years. shouldn't sit on babies.
     },
     // ========== DRIVING SKILLS ==========
     groundDrive_walk: {
@@ -518,6 +522,7 @@ exports.SKILLS = {
             { stat: 'movement', amount: 0.01 },
         ],
         isPhysical: true,
+        minimumAge: (365 * 2)
     },
     trot_under_saddle: {
         id: 'trot_under_saddle',
@@ -544,6 +549,7 @@ exports.SKILLS = {
             { stat: 'tempo', amount: 0.02 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 2)
     },
     canter_under_saddle: {
         id: 'canter_under_saddle',
@@ -572,6 +578,7 @@ exports.SKILLS = {
             { stat: 'speed', amount: 0.02 },
         ],
         isPhysical: true,
+        minimumAge: ((365 * 2) + 182) //2.5 years
     },
     halt_under_saddle: {
         id: 'halt_under_saddle',
@@ -592,6 +599,7 @@ exports.SKILLS = {
             { stat: 'strength', amount: 0.03 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 2)
     },
     turn_under_saddle: {
         id: 'turn_under_saddle',
@@ -613,6 +621,7 @@ exports.SKILLS = {
             { stat: 'flexibility', amount: 0.03 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 2)
     },
     back_under_saddle: {
         id: 'back_under_saddle',
@@ -635,6 +644,7 @@ exports.SKILLS = {
             { stat: 'balance', amount: 0.03 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 2)
     },
     // ========== INTERMEDIATE SKILLS ==========
     hand_gallop: {
@@ -658,6 +668,7 @@ exports.SKILLS = {
             { stat: 'strength', amount: 0.05 },
         ],
         isPhysical: true,
+        minimumAge: (365 * 3)
     },
     self_carriage: {
         id: 'self_carriage',
@@ -680,6 +691,7 @@ exports.SKILLS = {
             { stat: 'stamina', amount: 0.04 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 3)
     },
     yield_forehand: {
         id: 'yield_forehand',
@@ -702,6 +714,7 @@ exports.SKILLS = {
             { stat: 'balance', amount: 0.03 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 3)
     },
     yield_haunches: {
         id: 'yield_haunches',
@@ -724,6 +737,7 @@ exports.SKILLS = {
             { stat: 'balance', amount: 0.03 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 3)
     },
     square_halt: {
         id: 'square_halt',
@@ -746,6 +760,7 @@ exports.SKILLS = {
             { stat: 'strength', amount: 0.04 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 2)
     },
     ground_poles_walk: {
         id: 'ground_poles_walk',
@@ -767,6 +782,7 @@ exports.SKILLS = {
             { stat: 'bravery', amount: 0.03 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 2)
     },
     ground_poles_trot: {
         id: 'ground_poles_trot',
@@ -788,6 +804,7 @@ exports.SKILLS = {
             { stat: 'stamina', amount: 0.03 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 3)
     },
     ground_poles_canter: {
         id: 'ground_poles_canter',
@@ -810,6 +827,7 @@ exports.SKILLS = {
             { stat: 'stamina', amount: 0.04 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 3)
     },
     sidepass: {
         id: 'sidepass',
@@ -832,6 +850,7 @@ exports.SKILLS = {
             { stat: 'balance', amount: 0.04 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 3)
     },
     cavaletti: {
         id: 'cavaletti',
@@ -854,6 +873,7 @@ exports.SKILLS = {
             { stat: 'strength', amount: 0.04 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 3)
     },
     transitions: {
         id: 'transitions',
@@ -877,6 +897,7 @@ exports.SKILLS = {
             { stat: 'stamina', amount: 0.03 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 2)
     },
     // ========== ADVANCED SKILLS ==========
     jumping: {
@@ -909,6 +930,7 @@ exports.SKILLS = {
             { stat: 'stamina', amount: 0.02 },
         ],
         isPhysical: true,
+        minimumAge: (365 * 4)
     },
     collection: {
         id: 'collection',
@@ -932,6 +954,7 @@ exports.SKILLS = {
             { stat: 'flexibility', amount: 0.06 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 3)
     },
     extension: {
         id: 'extension',
@@ -955,6 +978,7 @@ exports.SKILLS = {
             { stat: 'movement', amount: 0.06 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 3)
     },
     slow_spin: {
         id: 'slow_spin',
@@ -977,6 +1001,7 @@ exports.SKILLS = {
             { stat: 'flexibility', amount: 0.05 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 3)
     },
     turn_on_forehand: {
         id: 'turn_on_forehand',
@@ -998,6 +1023,7 @@ exports.SKILLS = {
             { stat: 'balance', amount: 0.05 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 3)
     },
     halfpass: {
         id: 'halfpass',
@@ -1021,6 +1047,7 @@ exports.SKILLS = {
             { stat: 'balance', amount: 0.06 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 4)
     },
     pole_sidepass: {
         id: 'pole_sidepass',
@@ -1044,6 +1071,7 @@ exports.SKILLS = {
             { stat: 'balance', amount: 0.05 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 3)
     },
     lead_changes_simple: {
         id: 'lead_changes_simple',
@@ -1068,6 +1096,7 @@ exports.SKILLS = {
             { stat: 'flexibility', amount: 0.05 }
         ],
         isPhysical: true,
+        minimumAge: (365 * 3)
     },
 };
 /**

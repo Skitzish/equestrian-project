@@ -5,7 +5,7 @@ import { Horse, HorseDocument } from './schemas/horse.schema';
 import { CreateStarterHorseDto, TrainHorseDto, HorseResponseDto } from './dto/horse.dto';
 import { UsersService } from '../users/users.service';
 import { Counter, CounterDocument } from '../common/schemas/counter.schema';
-import { generateRandomVisualGenetics } from '../../../shared';
+import { generateRandomVisualGenetics, generateRandomConformationGenetics } from '../../../shared';
 
 // Import shared game logic
 import {
@@ -61,11 +61,13 @@ export class HorsesService {
 
     const visualGenetics = generateRandomVisualGenetics();
 
+    const conformationGenetics = generateRandomConformationGenetics();
+
     // Create horse
     const horse = new this.horseModel({
       horseId,
       name: createHorseDto.name,
-      age: 3, // Starter horses are 3 years old (training age)
+      age: 3*365, // Starter horses are 3 years old (training age), age is stored in days
       gender: createHorseDto.gender,
       ownerId: user._id,
       genes,
@@ -300,10 +302,8 @@ export class HorsesService {
       const resetSatisfaction = resetDailySatisfaction(horse.satisfaction);
       horse.satisfaction = resetSatisfaction;
       
-      // Age horses once per year (365 days)
-      if ((user.currentDay + 1) % 365 === 0) {
-        horse.age += 1;
-      }
+      // Age horses by one day (365 days)
+      horse.age += 1;
       
       await horse.save();
       

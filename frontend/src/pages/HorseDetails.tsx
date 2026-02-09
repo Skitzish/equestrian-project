@@ -7,8 +7,13 @@ import { SKILLS } from '@shared/skills/skill-definitions';
 import { validateSkillTraining } from '@shared/skills/skill-validation';
 import { useAuth } from '../contexts/AuthContext';
 import { calculateColor, getColorName, formatGeneticCode } from '@shared/visual-genetics/color-calculator';
+import { formatDetailedAge } from '@shared/training/age-system';
 import HorseImage from '../components/HorseImage';
+import Header from '@/components/Header';
 import type { VisualGenetics } from '@shared/index';
+import ButtonBar from '@/components/ButtonBar';
+import { getSecondaryNavButtons, getMainNavigationButtons } from '@/config/buttonPresets';
+import { useAdvanceDay } from '@/hooks/useAdvanceDay';
 
 const HorseDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -37,6 +42,8 @@ const HorseDetails: React.FC = () => {
       setLoading(false);
     }
   };
+
+  const handleAdvanceDay = useAdvanceDay(loadHorse);
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
@@ -72,39 +79,31 @@ const HorseDetails: React.FC = () => {
 
   const colorInfo = calculateColor(horse.visualGenetics as VisualGenetics);
 
+  const buttons = [
+        ...getSecondaryNavButtons,
+        ...getMainNavigationButtons(handleAdvanceDay)
+        
+    ]
+
   return (
     <div className="main-container">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center">
-            <Link to="/" className="text-green-600 hover:text-green-700">
-              ← Back to Stables
-            </Link>
-            <div className="flex items-center gap-6">
-              <div className="text-sm text-gray-600">
-                <span className="font-medium">Day {user?.currentDay}</span>
-                <span className="mx-2">•</span>
-                <span>{user?.timeRemainingToday} min left</span>
-                <span className="mx-2">•</span>
-                <span className="font-medium text-green-600">${user?.money}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <header>
+        <Header />
+        <ButtonBar buttons={buttons} />
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         {/* Horse Header */}
-      <div className="card mb-8">
+      <div className="horse-card">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* LEFT SIDE: Horse info */}
           <div>
           <div className='flex justify-between items-start mb-4'>
             <div>
               <h1 className='text-3xl font-bold'>{horse.name}</h1>
-              <p className='text-gray-600'>
-                {horse.gender.charAt(0).toUpperCase()+horse.gender.slice(1)} • {horse.age} years old • Generation {horse.generation}
+              <p className='text-black-600'>
+                {horse.gender.charAt(0).toUpperCase()+horse.gender.slice(1)} • {formatDetailedAge(horse.age)} old • Generation {horse.generation}
               </p>
             </div>
             <button onClick={() => setShowRenameModal(true)} className='btn-secondary text-sm'>
@@ -113,23 +112,23 @@ const HorseDetails: React.FC = () => {
           </div>
           <div className='space-y-3 text-sm'>
             <div className='flex justify-between'>
-              <span className='text-gray-600 font-medium'>Color:</span>
+              <span className='text-black-600 font-medium'>Color:</span>
               <span className='font-semibold'>{getColorName(colorInfo.displayColor)}</span>
             </div>
             <div className='flex justify-between'>
-              <span className='text-gray-600 font-medium'>Personality:</span>
+              <span className='text-black-600 font-medium'>Personality:</span>
               <span>{horse.mentalState.personality}</span>
             </div>
             <div className='flex justify-between'>
-              <span className='text-gray-600 font-medium'>Mood:</span>
+              <span className='text-black-600 font-medium'>Mood:</span>
               <span>{horse.mentalState.mood}</span>
             </div>
             <div className='flex justify-between'>
-              <span className='text-gray-600 font-medium'>Fatigue:</span>
+              <span className='text-black-600 font-medium'>Fatigue:</span>
               <span>{horse.mentalState.fatigue}%</span>
             </div>
             <div className='flex justify-between'>
-              <span className='text-gray-600 font-medium'>Stabling:</span>
+              <span className='text-black-600 font-medium'>Stabling:</span>
               <span className='capitalize'>{horse.housing}</span>
             </div>
           </div>
@@ -148,51 +147,6 @@ const HorseDetails: React.FC = () => {
         </div>
       </div>
 
-        {/* Old Horse Header
-        <div className="card mb-8">
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <h1 className="text-3xl font-bold">{horse.name}</h1>
-              <p className="text-gray-600">
-                {horse.gender.charAt(0).toUpperCase() + horse.gender.slice(1)} • {horse.age} years old • Generation {horse.generation}
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <button onClick={() => setShowRenameModal(true)} className="btn-secondary text-sm">
-                Rename
-              </button>
-              <span className="text-5xl">
-                {horse.gender === 'stallion' ? '🐎' : horse.gender === 'mare' ? '🐴' : '🐴'}
-              </span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-            <div>
-              <span className="text-gray-600">Color:</span>
-              <span className="font-medium ml-2">
-                {getColorName(calculateColor(horse.visualGenetics as VisualGenetics).displayColor)}
-              </span>
-            </div>
-            <div>
-              <span className="text-gray-600">Personality:</span>
-              <span className="font-medium ml-2">{horse.mentalState.personality}</span>
-            </div>
-            <div>
-              <span className="text-gray-600">Mood:</span>
-              <span className="font-medium ml-2">{horse.mentalState.mood}</span>
-            </div>
-            <div>
-              <span className="text-gray-600">Fatigue:</span>
-              <span className="font-medium ml-2">{horse.mentalState.fatigue}%</span>
-            </div>
-            <div>
-              <span className="text-gray-600">Housing:</span>
-              <span className="font-medium ml-2">{horse.housing}</span>
-            </div>
-          </div>
-        </div>*/}
-
         {/* Last Training Result */}
         {lastTrainingResult && (
           <div className={`card mb-8 ${lastTrainingResult.success ? 'border-l-4 border-green-500' : 'border-l-4 border-red-500'}`}>
@@ -204,12 +158,16 @@ const HorseDetails: React.FC = () => {
                 <span className="font-medium ml-2">+{lastTrainingResult.skillGained.toFixed(2)}</span>
               </div>
               <div>
-                <span className="text-gray-600">New Level:</span>
-                <span className="font-medium ml-2">{lastTrainingResult.newSkillLevel.toFixed(1)}</span>
+                <span className="text-gray-600">Mood:</span>
+                <span className="font-medium ml-2">{lastTrainingResult.newMood || horse.mentalState.mood}</span>
               </div>
-              <div>
+              {/*<div>
                 <span className="text-gray-600">Fatigue:</span>
                 <span className="font-medium ml-2">+{lastTrainingResult.fatigueGained}</span>
+              </div>*/}
+              <div>
+                <span className="text-gray-600">Fatigue Level:</span>
+                <span className="font-medium ml-2">{horse.mentalState.fatigue.toFixed(2)}%</span>
               </div>
               <div>
                 <span className="text-gray-600">Time Left:</span>
@@ -220,115 +178,120 @@ const HorseDetails: React.FC = () => {
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Stats & Training */}
-          <div className="card">
-            <h2 className="text-xl font-bold mb-4">Training Progress</h2>
-            <div className="space-y-3">
-              {Object.entries(horse.training).map(([statName, value]) => {
-                const { potential, stars } = getStatPotential(statName);
-                return (
-                  <div key={statName}>
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-sm capitalize">{statName}</span>
-                      <span className="text-xs text-gray-500" title={`Potential: ${potential}`}>
-                        {stars}
-                      </span>
-                    </div>
-                    {renderStatBar('', value)}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          {/* Left Column: Grooming & Skills */}
+            <div className="space-y-8">
+              {/* Horse Care */}
+              <div className="card">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-bold">Grooming</h2>
+                 <button
+                   onClick={() => {
+                      setTrainingType('care');
+                      setShowTrainModal(true);
+                    }}
+                    className="btn-primary text-sm"
+                    disabled={horse.mentalState.mood === 'Shut-down' || user?.timeRemainingToday === 0}
+                  >
+                    Groom Horse
+                  </button>
+                </div>
 
-          {/* Horse Care */}
-          <div className="card">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">Grooming</h2>
-              <button
-                onClick={() => {
-                  setTrainingType('care');
-                  setShowTrainModal(true);
-                }}
-                className="btn-primary text-sm"
-                disabled={horse.mentalState.mood === 'Shut-down' || user?.timeRemainingToday === 0}
-                >Groom Horse</button>
-            </div>
-
-            {Object.entries(horse.skills).filter(([skillId]) => {
-              const skill = SKILLS[skillId];
-              return skill?.category === 'care';
-            }).length === 0 ? (
-              <p className="text-gray-600 text-center py-8">No grooming experience yet.</p>
-            ) : (
-              <div className="space-y-3">
                 {Object.entries(horse.skills).filter(([skillId]) => {
                   const skill = SKILLS[skillId];
                   return skill?.category === 'care';
-                }).map(([skillId, level]) => (
-                  <div key={skillId} className="space-y-1">
-                    <div className="flex justify-between text-sm">
-                      <span className="capitalize">{SKILLS[skillId]?.name || skillId}</span>
-                      <span>{level.toFixed(1)}/100</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-blue-600 h-2 rounded-full transition-all"
-                        style={{ width: `${level}%` }}
-                      />
-                    </div>
+                }).length === 0 ? (
+                  <p className="text-gray-600 text-center py-8">No grooming experience yet.</p>
+                ) : (
+                  <div className="space-y-3">
+                    {Object.entries(horse.skills).filter(([skillId]) => {
+                      const skill = SKILLS[skillId];
+                      return skill?.category === 'care';
+                    }).map(([skillId, level]) => (
+                      <div key={skillId} className="space-y-1">
+                        <div className="flex justify-between text-sm">
+                          <span className="capitalize">{SKILLS[skillId]?.name || skillId}</span>
+                          <span>{level.toFixed(1)}/100</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className="bg-blue-600 h-2 rounded-full transition-all"
+                            style={{ width: `${level}%` }}
+                          />
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
-            )}
-          </div>
 
-          {/* Skill Training */}
-          <div className="card">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">Skills</h2>
-              <button
-                onClick={() => {
-                  setTrainingType('skills');
-                  setShowTrainModal(true);
-                }}
-                className="btn-primary text-sm"
-                disabled={horse.mentalState.mood === 'Shut-down' || user?.timeRemainingToday === 0}
-              >
-                Train Horse
-              </button>
-            </div>
+              {/* Skill Training */}
+              <div className="card">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-bold">Skills</h2>
+                  <button
+                    onClick={() => {
+                      setTrainingType('skills');
+                      setShowTrainModal(true);
+                    }}
+                    className="btn-primary text-sm"
+                    disabled={horse.mentalState.mood === 'Shut-down' || user?.timeRemainingToday === 0}
+                  >
+                    Train Horse
+                  </button>
+                </div>
 
-            {Object.entries(horse.skills).filter(([skillId]) => {
-              const skill = SKILLS[skillId];
-              return skill?.category !== 'care';
-            }).length === 0 ? (
-              <p className="text-gray-600 text-center py-8">No skills learned yet. Start training!</p>
-            ) : (
-              <div className="space-y-3">
-                {Object.entries(horse.skills)
-                .filter(([skillId]) => {
+                {Object.entries(horse.skills).filter(([skillId]) => {
                   const skill = SKILLS[skillId];
                   return skill?.category !== 'care';
-                })
-                .map(([skillId, level]) => (
-                  <div key={skillId} className="space-y-1">
-                    <div className="flex justify-between text-sm">
-                      <span className="capitalize">{SKILLS[skillId]?.name || skillId}</span>
-                      <span>{level.toFixed(1)}/100</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-blue-600 h-2 rounded-full transition-all"
-                        style={{ width: `${level}%` }}
-                      />
-                    </div>
+                }).length === 0 ? (
+                  <p className="text-gray-600 text-center py-8">No skills learned yet. Start training!</p>
+                ) : (
+                  <div className="space-y-3">
+                    {Object.entries(horse.skills)
+                    .filter(([skillId]) => {
+                      const skill = SKILLS[skillId];
+                      return skill?.category !== 'care';
+                    })
+                    .map(([skillId, level]) => (
+                      <div key={skillId} className="space-y-1">
+                        <div className="flex justify-between text-sm">
+                          <span className="capitalize">{SKILLS[skillId]?.name || skillId}</span>
+                          <span>{level.toFixed(1)}/100</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className="bg-blue-600 h-2 rounded-full transition-all"
+                            style={{ width: `${level}%` }}
+                          />
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
-            )}
-          </div>
-        </div>  
+            </div>
+
+            {/* Right Column: Stats & Training */}
+            <div className="card">
+              <h2 className="text-xl font-bold mb-4">Training Progress</h2>
+              <div className="space-y-3">
+                {Object.entries(horse.training).map(([statName, value]) => {
+                  const { potential, stars } = getStatPotential(statName);
+                  return (
+                    <div key={statName}>
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-sm capitalize">{statName}</span>
+                        <span className="text-xs text-gray-500" title={`Potential: ${potential}`}>
+                          {stars}
+                        </span>
+                      </div>
+                      {renderStatBar('', value)}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div> 
       </main>
 
       {/* Rename Modal */}

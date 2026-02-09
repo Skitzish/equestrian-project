@@ -48,11 +48,12 @@ export interface SkillDefinition {
     category: SkillCategory;
     description: string;
     baseTrainingValue: number;
+    isPhysical: boolean;
     prerequisites: SkillPrerequisite[];
     minimumStats: StatRequirement[];
     statInfluences: StatInfluence[];
     statContributions: StatContribution[];
-    isPhysical: boolean;
+    minimumAge?: number;
 }
 /**
  * Horse's current skill levels

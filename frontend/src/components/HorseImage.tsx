@@ -51,9 +51,9 @@ const HorseImage: React.FC<HorseImageProps> = ({
         );
 
         // Logs for path checking.
-        console.log('Color Result:', colorResult);
-        console.log('All image layers:', layers);
-        console.log('Mane path specifically:', layers.mane);
+        //console.log('Color Result:', colorResult);
+        //console.log('All image layers:', layers);
+        //console.log('Mane path specifically:', layers.mane);
 
         const layerOrder = getLayerOrder();
 

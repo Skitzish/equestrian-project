@@ -63,11 +63,12 @@ export interface SkillDefinition {
   category: SkillCategory;
   description: string;
   baseTrainingValue: number; // BTV in formula (1-10, higher = easier)
+  isPhysical: boolean; // Affects Pent-up/Energetic mood modifiers
   prerequisites: SkillPrerequisite[];
   minimumStats: StatRequirement[];
   statInfluences: StatInfluence[];
   statContributions: StatContribution[];
-  isPhysical: boolean; // Affects Pent-up/Energetic mood modifiers
+  minimumAge?: number; // Training before this age incurs penalties.
 }
 
 /**

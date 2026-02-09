@@ -23,12 +23,12 @@ function validateSkillTraining(horse, skillId) {
         };
     }
     // Check age requirement (must be at least 2 years old to train)
-    if (horse.age < 2) {
-        return {
-            canTrain: false,
-            reason: 'Horse must be at least 2 years old to train',
-        };
-    }
+    /*if (horse.age < (2*365)) {
+      return {
+        canTrain: false,
+        reason: 'Horse must be at least 2 years old to train',
+      };
+    }*/
     // Check fatigue (can't train if too tired)
     if (horse.mentalState.fatigue >= 80 && !isCareSkill) {
         return {

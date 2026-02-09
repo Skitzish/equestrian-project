@@ -9,6 +9,7 @@ export * from './types/mental-state.types';
 export * from './types/training.types';
 export * from './types/horse.types';
 export * from './types/visual-genetics.types';
+export * from './types/conformation-genetics.types'
 
 // ========== GENETICS ==========
 export * from './genetics/breeding';
@@ -18,6 +19,10 @@ export * from './genetics/phenotype';
 export * from './visual-genetics/color-calculator';
 export * from './visual-genetics/color-generator';
 export * from './visual-genetics/color-breeding';
+
+// ========== CONFORMATION GENETICS =========
+export * from './conformation-genetics/conformation-breeding';
+export * from './conformation-genetics/conformation-generator';
 
 // ========== SKILLS ==========
 export * from './skills/skill-definitions';

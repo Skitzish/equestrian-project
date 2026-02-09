@@ -15,6 +15,54 @@
     @apply min-h-screen;
   }
 
+  .buttonBar-container {
+    background-color: rgb(39, 37, 119);
+    @apply shadow-sm
+    max-w-7xl
+    mx-auto
+    px-4
+    py-4
+    sm:px-6
+    lg:px-8
+    flex
+    justify-between
+    items-center;
+  }
+
+  .header-container {
+    background-color: #adbdbc;
+    @apply shadow-sm
+    max-w-7xl 
+    mx-auto 
+    px-4 
+    py-4 
+    sm:px-6 
+    lg:px-8
+    flex 
+    justify-between 
+    items-center;
+  }
+
+  .header-child-container {
+    @apply flex 
+    items-center 
+    gap-6;
+  }
+
+  .header-current-day-status {
+    @apply text-sm 
+    text-gray-600;
+  }
+
+  .horse-card {
+    @apply card mb-8;
+    background-color: #41523d;
+  }
+
+  .logo{
+    padding: 10px;
+  }
+
   .btn {
     @apply px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
   }

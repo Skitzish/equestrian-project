@@ -90,16 +90,16 @@ export interface MentalState {
  * Personality value for training formula (-20 to +20)
  */
 export const PERSONALITY_VALUES: Record<Personality, number | 'variable'> = {
-  'Recalcitrant': -20,
-  'Intractable': -15,
-  'Stubborn': -10,
-  'Aloof': -5,
-  'Timid': -3,
+  'Recalcitrant': -10,
+  'Intractable': -7,
+  'Stubborn': -5,
+  'Aloof': -3,
+  'Timid': -1,
   'Indifferent': 0,
-  'Curious': 3,
-  'Personable': 5,
-  'Willing': 10,
-  'Amiable': 15,
+  'Curious': 1,
+  'Personable': 2,
+  'Willing': 4,
+  'Amiable': 5,
   'Bold': 'variable', // -3 to +8, influenced by bond
 };
 

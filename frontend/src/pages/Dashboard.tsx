@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+//import { useAuth } from '../contexts/AuthContext';
 import { horseService, gameService } from '../services/api';
 import { Horse } from '../types';
 import { calculatePotential, getStarRating } from '@shared/types/genetics.types';
 import { calculateColor, getColorName } from '@shared/visual-genetics/color-calculator';
+import { formatDetailedAge } from '@shared/training/age-system.ts';
+import Header  from "@/components/Header";
 import type { VisualGenetics } from '@shared/types/visual-genetics.types';
+import { getMainNavigationButtons, getTestPageButton } from '@/config/buttonPresets';
+import { useAdvanceDay } from '@/hooks/useAdvanceDay';
+import ButtonBar from '@/components/ButtonBar';
 
 const Dashboard: React.FC = () => {
-  const { user, refreshUser, logout } = useAuth();
+  {/*const { user, refreshUser, logout } = useAuth();*/}
   const [horses, setHorses] = useState<Horse[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -27,8 +32,10 @@ const Dashboard: React.FC = () => {
       setLoading(false);
     }
   };
+  
+  const handleAdvanceDay = useAdvanceDay(loadHorses);
 
-  const handleAdvanceDay = async () => {
+  {/*const handleAdvanceDay = async () => {
     if (!confirm('Advance to the next day? All horses will have their moods and fatigue updated.')) {
       return;
     }
@@ -42,7 +49,7 @@ const Dashboard: React.FC = () => {
       console.error('Failed to advance day:', error);
       alert('Failed to advance day');
     }
-  };
+  };*/}
 
   const getStars = (genes: any, stat: string): string => {
     const potential = calculatePotential(genes[stat]);
@@ -58,32 +65,29 @@ const Dashboard: React.FC = () => {
     );
   }
 
+  const buttons = [
+    {
+      text: 'Create Horse',
+      onClick: () => setShowCreateModal(true),
+      variant: 'primary' as const,
+      icon: '+'
+    },
+    ...getMainNavigationButtons(handleAdvanceDay),
+    ...getTestPageButton
+  ]
+
   return (
     <div className="main-container">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">🐴 Equestrian Legacy</h1>
-            <div className="flex items-center gap-6">
-              <div className="text-sm text-gray-600">
-                <span className="font-medium">Day {user?.currentDay}</span>
-                <span className="mx-2">•</span>
-                <span>{user?.timeRemainingToday} min left</span>
-                <span className="mx-2">•</span>
-                <span className="font-medium text-green-600">${user?.money}</span>
-              </div>
-              <button onClick={logout} className="btn-secondary text-sm">
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
+      <header>
+        <Header />
+        <ButtonBar buttons={buttons} />
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         {/* Actions */}
-        <div className="flex gap-4 mb-8">
+        
+        {/*<div className="flex gap-4 mb-8">
           <button onClick={() => setShowCreateModal(true)} className="btn-primary">
             + Create Horse
           </button>
@@ -93,10 +97,13 @@ const Dashboard: React.FC = () => {
           <Link to="/chores" className="btn-secondary">
             🧺 Barn Chores
           </Link>
+          <Link to="/testpage" className="btn-secondary">
+            Test Page
+          </Link>
           <button onClick={handleAdvanceDay} className="btn-secondary">
             Advance Day →
           </button>
-        </div>
+        </div>*/}
 
         {/* Horse List */}
         {horses.length === 0 ? (
@@ -118,7 +125,7 @@ const Dashboard: React.FC = () => {
                   <div>
                     <h3 className="text-xl font-bold">{horse.name}</h3>
                     <p className="text-sm text-gray-600">
-                      {horse.gender.charAt(0).toUpperCase() + horse.gender.slice(1)} • {horse.age} years
+                      {horse.gender.charAt(0).toUpperCase() + horse.gender.slice(1)} • {formatDetailedAge(horse.age)}
                     </p>
                   </div>
                   <span className="text-2xl">
